@@ -1,61 +1,60 @@
 # Web Certificate Management System
 
-A Node.js-based web certificate management system that provides certificate generation, management, and export functionality.
+This is a Node.js-based web-based certificate management system that provides certificate generation, management, and export capabilities.
 
 ## Features
 
-- Certificate Generation and Management
-- Web Interface Operations
-- Data Import/Export
-- System Monitoring
-- Batch Processing
+- Certificate generation and management
+- Web interface operations
+- Data import and export
+- System monitoring
+- Batch processing
 
-## Tech Stack
+## Tech stack
 
 - Node.js
 - Express.js
-- CSV Processing
-- Certificate Operations (node-forge)
-- File Compression (jszip)
+- CSV processing
+- Certificate manipulation (node-forge)
+- File compression (jszip)
 
 ## Installation
 
-1. Ensure Node.js is installed
-2. Clone the project locally
-3. Install dependencies:
+1. Make sure you have Node.js installed
+2. Clone the project to your local computer
+3. Install Dependencies:
 ```bash
 npm install
 ```
 
-## Usage
+## How to use
 
 1. Start the server:
 ```bash
 node index.js
 ```
 
-2. Access the system:
-Open your browser and visit `http://localhost:3000`
+2. Access to the system:
+Default access interface 'http://localhost:9960/w'
 
 ## Project Structure
 
-- `/certs` - Certificate storage directory
-- `/data` - Data files directory
-- `/html` - Frontend pages
-- `/js` - JavaScript files
-- `certificate.js` - Core certificate processing logic
-- `index.js` - Application entry point
-- `page.js` - Page routing
-- `settings.js` - System settings
-- `stop.js` - Service termination
+- '/certs' - The certificate store directory
+- '/data' - The directory of data files
+- '/html' - Front-end page
+- '/js' - JavaScript file
+- 'certificate.js' - The core logic of certificate processing
+- 'index.js' - Application entry
+- 'page.js' - Page routing
+- 'settings.js' - System settings
+- 'stop.js' - Interface access error
 
-## Important Notes
+## Precautions
 
-- Ensure proper file read/write permissions when running the system
-- Regular backup of certificates and data files is recommended
-- Securely store generated certificate private keys
+- Make sure that the system has the appropriate read and write permissions to the file while it is running
+- It is recommended to back up certificates and data files regularly
+- Keep the private key of the generated certificate safe
 
 ## License
 
 MIT License
-
