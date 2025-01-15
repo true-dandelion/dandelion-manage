@@ -1,3 +1,6 @@
+## Language
+[Chinese version] (README.md)
+
 # Web Certificate Management System
 
 This is a Node.js-based web-based certificate management system that provides certificate generation, management, and export capabilities.
