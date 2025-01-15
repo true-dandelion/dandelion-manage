@@ -1,5 +1,5 @@
 ## Language
-[中文版本](README.md)
+[English Version] (English.md)
 
 # Web Certificate Management System
 
@@ -38,7 +38,11 @@ node index.js
 ```
 
 2. Access to the system:
-Default access interface 'http://localhost:9960/w'
+- Default access interface 'http://localhost:9960/w'
+
+3. User Information:
+- Default user: 'root'
+- Default password: 'wu1024'
 
 ## Project Structure
 
@@ -57,5 +61,4 @@ Default access interface 'http://localhost:9960/w'
 - Make sure that the system has the appropriate read and write permissions to the file while it is running
 - It is recommended to back up certificates and data files regularly
 - Keep the private key of the generated certificate safe
-
 
