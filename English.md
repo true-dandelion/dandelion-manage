@@ -1,5 +1,5 @@
 ## Language
-[Chinese version] (README.md)
+[中文版本](README.md)
 
 # Web Certificate Management System
 
