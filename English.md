@@ -58,6 +58,4 @@ Default access interface 'http://localhost:9960/w'
 - It is recommended to back up certificates and data files regularly
 - Keep the private key of the generated certificate safe
 
-## License
 
-MIT License
