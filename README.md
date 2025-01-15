@@ -1,3 +1,6 @@
+## 语言language
+English version `https://github.com/true-dandelion/dandelion-manage/blob/973883e476d4b01cff6e6ca37211991c995026ba/English.md`
+
 # Web 证书管理系统
 
 这是一个基于 Node.js 的 Web 证书管理系统，提供证书生成、管理和导出功能。
