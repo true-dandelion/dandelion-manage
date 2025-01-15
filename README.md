@@ -35,7 +35,7 @@ node index.js
 ```
 
 2. 访问系统：
-打开浏览器访问 `http://localhost:3000`
+默认访问接口 `http://localhost:9960/w`
 
 ## 项目结构
 
@@ -47,7 +47,7 @@ node index.js
 - `index.js` - 应用入口
 - `page.js` - 页面路由
 - `settings.js` - 系统设置
-- `stop.js` - 停止服务
+- `stop.js` - 接口错误访问
 
 ## 注意事项
 
