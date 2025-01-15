@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禁止访问 - 403</title>
+</head>
+<body>
+    <div class="container">
+        <div class="border">
+            <div class="corner top-left"></div>
+            <div class="corner top-right"></div>
+            <div class="corner bottom-left"></div>
+            <div class="corner bottom-right"></div>
+            <div class="content">
+                <div class="error-code">403</div>
+                <div class="message">∎ 此处已上锁</div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            font-family: "HYWenHei", "Microsoft YaHei", sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            padding: 2rem;
+        }
+
+        .border {
+            position: relative;
+            padding: 3rem 4rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            animation: borderGlow 4s ease-in-out infinite;
+        }
+
+        .corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #ffd700;
+        }
+
+        .top-left {
+            top: -2px;
+            left: -2px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .top-right {
+            top: -2px;
+            right: -2px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .bottom-left {
+            bottom: -2px;
+            left: -2px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .bottom-right {
+            bottom: -2px;
+            right: -2px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 7rem;
+            font-weight: 200;
+            letter-spacing: 0.3em;
+            margin: 0;
+            background: linear-gradient(45deg, #ffd700, #fff8dc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); }
+        }
+
+        .border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, 
+                                      rgba(255, 215, 0, 0.1) 0%,
+                                      transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .border {
+                padding: 2rem 3rem;
+            }
+            .error-code {
+                font-size: 5rem;
+            }
+            .message {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</body>
+</html>

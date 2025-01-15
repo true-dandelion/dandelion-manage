@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>请求超时 - 408</title>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <div class="clock">
+            <div class="hand hour"></div>
+            <div class="hand minute"></div>
+            <div class="center"></div>
+        </div>
+        <div class="error-code">408</div>
+        <div class="message">∎ 时间暂停了</div>
+    </div>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            font-family: "HYWenHei", "Microsoft YaHei", sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                            radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                            radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                            radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                            radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 4s ease-in-out infinite;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        .clock {
+            width: 120px;
+            height: 120px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            background: #fff;
+        }
+
+        .hour {
+            width: 4px;
+            height: 30px;
+            margin-left: -2px;
+            animation: rotate 8s linear infinite;
+        }
+
+        .minute {
+            width: 2px;
+            height: 40px;
+            margin-left: -1px;
+            animation: rotate 4s linear infinite;
+        }
+
+        .center {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .error-code {
+            font-size: 7rem;
+            font-weight: 100;
+            letter-spacing: 0.3em;
+            margin: 0;
+            background: linear-gradient(45deg, #ffffff, #e0e0e0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            letter-spacing: 0.5em;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 768px) {
+            .clock {
+                width: 100px;
+                height: 100px;
+            }
+            .error-code {
+                font-size: 5rem;
+            }
+            .message {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</body>
+</html>

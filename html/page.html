@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 3rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            z-index: 1;
+            color: #333;
+            margin-right: 5%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+            color: #333;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #999;
+        }
+
+        input:focus {
+            border-color: #FFD700;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            flex-direction: row;
+        }
+
+        .error-message {
+            display: none;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.2rem;
+        }
+
+        .remember-me span {
+            margin-left: 0;
+        }
+
+        .forgot-password {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background: #FFD700;
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-button:hover {
+            background: #FFC800;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="login-container">
+        <h1>欢迎回来</h1>
+        
+        <form>
+            <div class="form-group">
+                <input type="text" placeholder="用户名" required>
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="密码" required>
+            </div>
+            
+            <div class="remember-forgot">
+                <label class="remember-me">
+                    <input type="checkbox">
+                    <span>记住我</span>
+                </label>
+            </div>
+            
+            <button type="submit" class="login-button">登录</button>
+            
+        </form>
+    </div>
+    
+</body>
+<script src="js/page.js"></script>
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = document.querySelector('input[type="text"]').value;
+        const password = document.querySelector('input[type="password"]').value;
+        const rememberMe = document.querySelector('input[type="checkbox"]').checked;
+        
+        // 这里应该添加实际的登录验证逻辑
+        // 模拟登录成功
+        if (username && password) {
+            const now = new Date();
+            const expires = new Date(now);
+            if (rememberMe) {
+                expires.setDate(expires.getDate() + 2); // 记住我2天
+            } else {
+                expires.setHours(expires.getHours() + 1); // 否则1小时
+            }
+            
+            // 设置cookie
+            document.cookie = `a=${username};expires=${expires.toUTCString()};path=/`;
+            document.cookie = `t=${now.getTime()};expires=${expires.toUTCString()};path=/`;
+            document.cookie = `p=${expires.getTime()};expires=${expires.toUTCString()};path=/`;
+            
+            // 跳转到首页
+            window.location.href = '/recording';
+        } else {
+            document.getElementById('errorMessage').textContent = '请输入用户名和密码';
+        }
+    });
+</script>
+</html>

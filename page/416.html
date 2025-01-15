@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>范围错误 - 416</title>
+</head>
+<body>
+    <div class="ripples"></div>
+    <div class="container">
+        <div class="frame">
+            <div class="frame-line top"></div>
+            <div class="frame-line right"></div>
+            <div class="frame-line bottom"></div>
+            <div class="frame-line left"></div>
+            <div class="content">
+                <div class="error-code">416</div>
+                <div class="message">∎ 超出边界了</div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #184e68 0%, #57ca85 100%);
+            font-family: "HYWenHei", "Microsoft YaHei", sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .ripples {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 30%, rgba(255,255,255,0.1));
+            opacity: 0.5;
+            animation: ripple 10s linear infinite;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .frame {
+            position: relative;
+            padding: 3rem 4rem;
+        }
+
+        .frame-line {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .frame-line.top,
+        .frame-line.bottom {
+            height: 2px;
+            width: 100%;
+            transform-origin: center;
+        }
+
+        .frame-line.left,
+        .frame-line.right {
+            width: 2px;
+            height: 100%;
+            transform-origin: center;
+        }
+
+        .frame-line.top {
+            top: 0;
+            left: 0;
+            animation: expand-horizontal 3s ease-in-out infinite;
+        }
+
+        .frame-line.right {
+            top: 0;
+            right: 0;
+            animation: expand-vertical 3s ease-in-out infinite 0.75s;
+        }
+
+        .frame-line.bottom {
+            bottom: 0;
+            right: 0;
+            animation: expand-horizontal 3s ease-in-out infinite 1.5s;
+        }
+
+        .frame-line.left {
+            bottom: 0;
+            left: 0;
+            animation: expand-vertical 3s ease-in-out infinite 2.25s;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 100;
+            letter-spacing: 0.3em;
+            margin: 0;
+            background: linear-gradient(45deg, #ffffff, rgba(255,255,255,0.8));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            letter-spacing: 0.5em;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes expand-horizontal {
+            0%, 100% { transform: scaleX(0.3); }
+            50% { transform: scaleX(1); }
+        }
+
+        @keyframes expand-vertical {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .frame {
+                padding: 2rem 3rem;
+            }
+            .error-code {
+                font-size: 5rem;
+            }
+            .message {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</body>
+</html>

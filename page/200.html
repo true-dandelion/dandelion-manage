@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>200 - 帮助页面</title>
+</head>
+<body>
+    <div class="container">
+        <div class="element"></div>
+        <div class="element"></div>
+        <h1 class="success-text">200</h1>
+        <p class="message">愿风与你同在</p>
+        <span class="vision anemo">∎ 风</span>
+        <span class="vision geo">∎ 岩</span>
+    </div>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #73c8ff, #4b8fff);
+            font-family: "HYWenHei", "Microsoft YaHei", sans-serif;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+        }
+
+        .success-text {
+            font-size: 6rem;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0.9;
+        }
+
+        .element {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+
+        .element:nth-child(1) {
+            top: -100px;
+            left: -50px;
+            width: 100px;
+            height: 100px;
+            animation-duration: 15s;
+        }
+
+        .element:nth-child(2) {
+            bottom: -80px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            animation-duration: 12s;
+            animation-direction: reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .vision {
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            animation: fade 2s ease-in-out infinite alternate;
+        }
+
+        .anemo { top: 20px; right: -100px; color: #9fe9e7; }
+        .geo { bottom: 20px; left: -100px; color: #fab632; }
+
+        @keyframes fade {
+            from { opacity: 0.4; }
+            to { opacity: 0.8; }
+        }
+    </style>
+</body>
+</html>
