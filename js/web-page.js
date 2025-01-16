@@ -152,7 +152,7 @@ function updateExtraFields() {
         border-radius: 4px;
         color: #606266;
         transition: all 0.3s;
-        background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23606266'%3E%3Cpath d='M10 12l-6-6h12l-6 6z'/%3E%3C/svg%3E") no-repeat right 8px center/12px;
+        background: white url("data:image/svg+xml,%3Csvg  viewBox='0 0 20 20' fill='%23606266'%3E%3Cpath d='M10 12l-6-6h12l-6 6z'/%3E%3C/svg%3E") no-repeat right 8px center/12px;
         appearance: none;
         cursor: pointer;
     `;
@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
 let currentDirectory = '';
 let selectedDirectory = '';
 
-// 打开目录选择器
+// 修改打开目录选择器函数
 function openDirectorySelector() {
     const modal = document.getElementById('directorySelectorModal');
     modal.style.display = 'block';
@@ -638,19 +638,166 @@ function openDirectorySelector() {
         event.stopPropagation();
     });
     
+    // 重置目录历史
+    directoryHistory = [];
+    currentDirectoryIndex = -1;
+    
     // 加载初始目录
     loadDirectory();
 }
 
-// 关闭目录选择器
-function closeDirectorySelector() {
-    const modal = document.getElementById('directorySelectorModal');
-    modal.style.display = 'none';
+// 添加目录历史记录
+let directoryHistory = [];
+let currentDirectoryIndex = -1;
+
+// 更新面包屑导航
+function updateBreadcrumb(path) {
+    const breadcrumb = document.getElementById('directoryBreadcrumb');
+    if (!breadcrumb) return;
+
+    const parts = path.split(/[\\/]/);
+    let html = `
+        <span class="breadcrumb-item" onclick="loadDirectory('')" 
+              style="color: #409eff; cursor: pointer; padding: 2px 8px; border-radius: 4px; transition: all 0.3s;"
+              onmouseover="this.style.backgroundColor='#ecf5ff'"
+              onmouseout="this.style.backgroundColor='transparent'">
+            根目录
+        </span>`;
+
+    let currentPath = '';
+    parts.forEach((part, index) => {
+        if (!part) return;
+        currentPath += (currentPath ? '/' : '') + part;
+        html += `
+            <span style="color: #909399; margin: 0 4px;">/</span>
+            <span class="breadcrumb-item" 
+                  onclick="loadDirectory('${currentPath}')"
+                  style="color: ${index === parts.length - 1 ? '#303133' : '#409eff'}; 
+                         cursor: pointer; 
+                         padding: 2px 8px; 
+                         border-radius: 4px;
+                         transition: all 0.3s;"
+                  onmouseover="this.style.backgroundColor='#ecf5ff'"
+                  onmouseout="this.style.backgroundColor='transparent'">
+                ${part}
+            </span>`;
+    });
+
+    breadcrumb.innerHTML = html;
+}
+
+// 修改加载目录内容函数
+async function loadDirectory(path = '') {
+    try {
+        const response = await fetch(`/web-page/search${path ? `?choose=${encodeURIComponent(path)}` : ''}`);
+        const data = await response.json();
+        
+        if (data.code === 200) {
+            currentDirectory = data.message.currentPath;
+            
+            // 更新当前路径输入框
+            const currentPathInput = document.getElementById('currentPath');
+            currentPathInput.value = currentDirectory;
+            
+            // 更新面包屑导航
+            updateBreadcrumb(currentDirectory);
+            
+            // 更新目录历史
+            if (currentDirectoryIndex < directoryHistory.length - 1) {
+                directoryHistory = directoryHistory.slice(0, currentDirectoryIndex + 1);
+            }
+            directoryHistory.push(currentDirectory);
+            currentDirectoryIndex = directoryHistory.length - 1;
+            
+            // 更新导航按钮状态
+            updateNavigationButtons();
+            
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = data.message.files
+                .sort((a, b) => {
+                    // 目录排在前面
+                    if (a.isDir !== b.isDir) {
+                        return b.isDir ? 1 : -1;
+                    }
+                    // 同类型按名称排序
+                    return a.name.localeCompare(b.name);
+                })
+                .map(file => `
+                    <div class="file-item" 
+                         onclick="${file.isDir ? `loadDirectory('${file.path.replace(/\\/g, '/').replace(/'/g, "\\'")}')` : ''}"
+                         style="
+                            padding: 12px 15px;
+                            cursor: ${file.isDir ? 'pointer' : 'default'};
+                            display: flex;
+                            align-items: center;
+                            border-radius: 4px;
+                            margin-bottom: 4px;
+                            ${file.isDir ? 'background-color: #f5f7fa;' : ''}
+                            transition: all 0.3s;
+                         "
+                         onmouseover="this.style.backgroundColor='${file.isDir ? '#eef1f6' : '#f5f7fa'}'"
+                         onmouseout="this.style.backgroundColor='${file.isDir ? '#f5f7fa' : 'transparent'}'">
+                        <i class="el-icon" style="margin-right: 8px; color: ${file.isDir ? '#409eff' : '#909399'};">
+                            <svg width="16" height="16">
+                                <use href="#icon-${getFileIcon(file)}"></use>
+                            </svg>
+                        </i>
+                        <span style="flex: 1; color: #606266;">${file.name}</span>
+                        ${file.isDir ? `
+                            <button class="select-dir-btn"
+                                    onclick="event.stopPropagation(); selectDirectory('${file.path.replace(/\\/g, '/').replace(/'/g, "\\'")}')"
+                                    style="
+                                        padding: 6px 16px;
+                                        border: 1px solid #dcdfe6;
+                                        border-radius: 4px;
+                                        background: white;
+                                        color: #606266;
+                                        cursor: pointer;
+                                        transition: all 0.3s;
+                                        font-size: 12px;
+                                    "
+                                    onmouseover="this.style.color='#409eff'; this.style.borderColor='#c6e2ff'; this.style.backgroundColor='#ecf5ff'"
+                                    onmouseout="this.style.color='#606266'; this.style.borderColor='#dcdfe6'; this.style.backgroundColor='white'">
+                                选择
+                            </button>
+                        ` : ''}
+                    </div>
+                `).join('');
+        } else {
+            showWebConfirmModal('错误', '加载目录失败：' + data.message, null, false);
+        }
+    } catch (error) {
+        console.error('加载目录失败:', error);
+        showWebConfirmModal('错误', '加载目录失败：' + error.message, null, false);
+    }
+}
+
+// 更新导航按钮状态
+function updateNavigationButtons() {
+    const backBtn = document.getElementById('directoryBackBtn');
+    const forwardBtn = document.getElementById('directoryForwardBtn');
     
-    // 移除遮罩层
-    const overlay = document.querySelector('.directory-selector-overlay');
-    if (overlay) {
-        overlay.remove();
+    if (backBtn) {
+        backBtn.disabled = currentDirectoryIndex <= 0;
+        backBtn.style.opacity = currentDirectoryIndex <= 0 ? '0.5' : '1';
+        backBtn.style.cursor = currentDirectoryIndex <= 0 ? 'not-allowed' : 'pointer';
+    }
+    
+    if (forwardBtn) {
+        forwardBtn.disabled = currentDirectoryIndex >= directoryHistory.length - 1;
+        forwardBtn.style.opacity = currentDirectoryIndex >= directoryHistory.length - 1 ? '0.5' : '1';
+        forwardBtn.style.cursor = currentDirectoryIndex >= directoryHistory.length - 1 ? 'not-allowed' : 'pointer';
+    }
+}
+
+// 添加前进后退导航功能
+function navigateDirectory(direction) {
+    if (direction === 'back' && currentDirectoryIndex > 0) {
+        currentDirectoryIndex--;
+        loadDirectory(directoryHistory[currentDirectoryIndex]);
+    } else if (direction === 'forward' && currentDirectoryIndex < directoryHistory.length - 1) {
+        currentDirectoryIndex++;
+        loadDirectory(directoryHistory[currentDirectoryIndex]);
     }
 }
 
@@ -673,85 +820,6 @@ function getFileIcon(file) {
             return 'txt';
         default:
             return 'file';
-    }
-}
-
-// 加载目录内容
-async function loadDirectory(path = '') {
-    try {
-        const response = await fetch(`/web-page/search${path ? `?choose=${encodeURIComponent(path)}` : ''}`);
-        const data = await response.json();
-        
-        if (data.code === 200) {
-            currentDirectory = data.message.currentPath;
-            const currentPathInput = document.getElementById('currentPath');
-            currentPathInput.value = currentDirectory;
-            
-            const fileList = document.getElementById('fileList');
-            fileList.innerHTML = data.message.files
-                .sort((a, b) => {
-                    // 目录排在前面
-                    if (a.isDir !== b.isDir) {
-                        return b.isDir ? 1 : -1;
-                    }
-                    // 同类型按名称排序
-                    return a.name.localeCompare(b.name);
-                })
-                .map(file => `
-                    <div class="file-item" 
-                         onclick="${file.isDir ? `loadDirectory('${file.path.replace(/\\/g, '/').replace(/'/g, "\\'")}')` : ''}"
-                         style="
-                            padding: 10px 15px;
-                            cursor: ${file.isDir ? 'pointer' : 'default'};
-                            display: flex;
-                            align-items: center;
-                            border-bottom: 1px solid #ebeef5;
-                            ${file.isDir ? 'background-color: #f5f7fa;' : ''}
-                            transition: background-color 0.3s;
-                         "
-                         onmouseover="this.style.backgroundColor='#f0f2f5'"
-                         onmouseout="this.style.backgroundColor='${file.isDir ? '#f5f7fa' : 'white'}'">
-                        <i class="el-icon" style="margin-right: 8px;">
-                            <svg width="16" height="16">
-                                <use href="#icon-${getFileIcon(file)}"></use>
-                            </svg>
-                        </i>
-                        <span style="flex: 1;">${file.name}</span>
-                        ${file.isDir ? `
-                            <button class="select-dir-btn"
-                                    onclick="event.stopPropagation(); selectDirectory('${file.path.replace(/\\/g, '/').replace(/'/g, "\\'")}')"
-                                    style="
-                                        padding: 4px 12px;
-                                        border: 1px solid #dcdfe6;
-                                        border-radius: 4px;
-                                        background: white;
-                                        color: #606266;
-                                        cursor: pointer;
-                                        transition: all 0.3s;
-                                    "
-                                    onmouseover="this.style.color='#409eff'; this.style.borderColor='#c6e2ff'; this.style.backgroundColor='#ecf5ff'"
-                                    onmouseout="this.style.color='#606266'; this.style.borderColor='#dcdfe6'; this.style.backgroundColor='white'">
-                                选择
-                            </button>
-                        ` : ''}
-                    </div>
-                `).join('');
-        } else {
-            alert('加载目录失败：' + data.message);
-        }
-    } catch (error) {
-        console.error('加载目录失败:', error);
-        alert('加载目录失败：' + error.message);
-    }
-}
-
-// 导航到上级目录
-function navigateToParent() {
-    if (!currentDirectory) return;
-    
-    const parentPath = currentDirectory.split(/[\\/]/).slice(0, -1).join('/');
-    if (parentPath) {
-        loadDirectory(parentPath);
     }
 }
 
@@ -1277,3 +1345,28 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeNetworkMonitoring();
     }
 });
+
+// 关闭目录选择器
+function closeDirectorySelector() {
+    const modal = document.getElementById('directorySelectorModal');
+    modal.style.display = 'none';
+    
+    // 移除遮罩层
+    const overlay = document.querySelector('.directory-selector-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
+
+// 导航到上级目录
+function navigateToParent() {
+    if (!currentDirectory) return;
+    
+    const parentPath = currentDirectory.split(/[\\/]/).slice(0, -1).join('/');
+    if (parentPath) {
+        loadDirectory(parentPath);
+    } else {
+        // 如果已经在根目录，则加载根目录
+        loadDirectory('');
+    }
+}

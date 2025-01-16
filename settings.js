@@ -54,7 +54,15 @@ if (!fs.existsSync(CONFIG_FILE)) {
         allowedDomains: [],
         'post': '9960',
         'listening-address': '0.0.0.0',
-        'language': 'zh-cn'
+        'language': 'zh-cn',
+        'timeout-period': '6400',
+        'server-address': '',
+        'server-address-control': 'false',
+        'unauthenticated-settings': '200',
+        'authorized-ip': '',
+        'authorized-ip-control': 'false',
+        'Dnb-address': '',
+        'Dnb-control': 'false'
     }, null, 4));
 }
 
